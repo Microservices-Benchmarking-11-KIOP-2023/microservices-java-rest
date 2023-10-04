@@ -5,7 +5,7 @@ plugins {
 
 }
 
-group = 'pb.java.microservices.grpc'
+group = 'pb.java.microservices.rest'
 version = '0.0.1-SNAPSHOT'
 
 java {

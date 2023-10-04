@@ -5,7 +5,7 @@ plugins {
 
 }
 
-group = 'pb.java.microservices.grpc'
+group = 'pb.java.microservices.rest'
 version = '0.0.1-SNAPSHOT'
 
 
@@ -18,7 +18,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'net.devh:grpc-spring-boot-starter:2.14.0.RELEASE'
-	implementation 'com.google.protobuf:protobuf-java-util:3.17.3'
+	implementation 'com.google.code.gson:gson:2.8.9'
 	implementation 'org.projectlombok:lombok:1.18.28'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
