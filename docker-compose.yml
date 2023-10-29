@@ -2,7 +2,7 @@ services:
   gateway:
     image: ghcr.io/microservices-benchmarking-11-kiop-2023/java-gateway-rest:latest
     build:
-      dockerfile: gateway/Dockerfile
+      dockerfile: Dockerfile
       context: ./gateway
     ports:
       - "5000:8080"
@@ -15,7 +15,7 @@ services:
   search:
     image: ghcr.io/microservices-benchmarking-11-kiop-2023/java-search-rest:latest
     build:
-      dockerfile: search/Dockerfile
+      dockerfile: Dockerfile
       context: ./search
     depends_on:
       - geo
@@ -27,15 +27,15 @@ services:
   profile:
     image: ghcr.io/microservices-benchmarking-11-kiop-2023/java-profile-rest:latest
     build:
-      dockerfile: profile/Dockerfile
+      dockerfile: Dockerfile
       context: ./profile
   geo:
     image: ghcr.io/microservices-benchmarking-11-kiop-2023/java-geo-rest:latest
     build:
-      dockerfile: geo/Dockerfile
+      dockerfile: Dockerfile
       context: ./geo
   rate:
     image: ghcr.io/microservices-benchmarking-11-kiop-2023/java-rate-rest:latest
     build:
-      dockerfile: rate/Dockerfile
+      dockerfile: Dockerfile
       context: ./rate
