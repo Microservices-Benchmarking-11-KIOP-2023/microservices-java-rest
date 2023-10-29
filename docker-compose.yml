@@ -1,5 +1,6 @@
 services:
   gateway:
+    image: ghcr.io/microservices-benchmarking-11-kiop-2023/java-gateway-rest:latest
     build: gateway
     ports:
       - "5000:8080"
@@ -10,6 +11,7 @@ services:
       - SEARCH_SERVICE_URL=http://search:8080/nearby
       - PROFILE_SERVICE_URL=http://profile:8080/hotels
   search:
+    image: ghcr.io/microservices-benchmarking-11-kiop-2023/java-search-rest:latest
     build: search
     depends_on:
       - geo
@@ -19,8 +21,11 @@ services:
       - RATE_SERVICE_URL=http://rate:8080/getRates
 
   profile:
+    image: ghcr.io/microservices-benchmarking-11-kiop-2023/java-profile-rest:latest
     build: profile
   geo:
+    image: ghcr.io/microservices-benchmarking-11-kiop-2023/java-geo-rest:latest
     build: geo
   rate:
+    image: ghcr.io/microservices-benchmarking-11-kiop-2023/java-rate-rest:latest
     build: rate
