@@ -1,0 +1,26 @@
+services:
+  gateway:
+    build: gateway
+    ports:
+      - "5000:8080"
+    depends_on:
+      - search
+      - profile
+    environment:
+      - SEARCH_SERVICE_URL=http://search:8082/nearby
+      - PROFILE_SERVICE_URL=http://profile:8081/hotels
+  search:
+    build: search
+    depends_on:
+      - geo
+      - rate
+    environment:
+      - GEO_SERVICE_URL=http://geo:8083/nearby
+      - RATE_SERVICE_URL=http://rate:8084/getRates
+
+  profile:
+    build: profile
+  geo:
+    build: geo
+  rate:
+    build: rate
