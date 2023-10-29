@@ -7,16 +7,16 @@ services:
       - search
       - profile
     environment:
-      - SEARCH_SERVICE_URL=http://search:8082/nearby
-      - PROFILE_SERVICE_URL=http://profile:8081/hotels
+      - SEARCH_SERVICE_URL=http://search:8080/nearby
+      - PROFILE_SERVICE_URL=http://profile:8080/hotels
   search:
     build: search
     depends_on:
       - geo
       - rate
     environment:
-      - GEO_SERVICE_URL=http://geo:8083/nearby
-      - RATE_SERVICE_URL=http://rate:8084/getRates
+      - GEO_SERVICE_URL=http://geo:8080/nearby
+      - RATE_SERVICE_URL=http://rate:8080/getRates
 
   profile:
     build: profile
