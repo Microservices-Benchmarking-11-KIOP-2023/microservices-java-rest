@@ -1,7 +1,9 @@
 services:
   gateway:
     image: ghcr.io/microservices-benchmarking-11-kiop-2023/java-gateway-rest:latest
-    build: gateway
+    build:
+      dockerfile: gateway/Dockerfile
+      context: .
     ports:
       - "5000:8080"
     depends_on:
@@ -12,7 +14,9 @@ services:
       - PROFILE_SERVICE_URL=http://profile:8080/hotels
   search:
     image: ghcr.io/microservices-benchmarking-11-kiop-2023/java-search-rest:latest
-    build: search
+    build:
+      dockerfile: search/Dockerfile
+      context: .
     depends_on:
       - geo
       - rate
@@ -22,10 +26,16 @@ services:
 
   profile:
     image: ghcr.io/microservices-benchmarking-11-kiop-2023/java-profile-rest:latest
-    build: profile
+    build:
+      dockerfile: profile/Dockerfile
+      context: .
   geo:
     image: ghcr.io/microservices-benchmarking-11-kiop-2023/java-geo-rest:latest
-    build: geo
+    build:
+      dockerfile: geo/Dockerfile
+      context: .
   rate:
     image: ghcr.io/microservices-benchmarking-11-kiop-2023/java-rate-rest:latest
-    build: rate
+    build:
+      dockerfile: rate/Dockerfile
+      context: .
