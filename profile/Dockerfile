@@ -7,8 +7,11 @@ WORKDIR /home/gradle/project
 # Copy the entire project into the container
 COPY . .
 
-# Ensure files are copied correctly (optional - for debugging)
-RUN ls -la /home/gradle/project
+# Install unzip utility
+RUN apt-get update && apt-get install -y unzip
+
+# Unzip the file into the specified folder
+RUN unzip /home/gradle/project/src/main/resources/data/hotels.zip -d /home/gradle/project/src/main/resources/data
 
 # Run the Gradle build
 RUN gradle clean build --no-daemon
