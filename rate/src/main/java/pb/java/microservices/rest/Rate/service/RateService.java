@@ -1,5 +1,8 @@
 package pb.java.microservices.rest.Rate.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
@@ -12,6 +15,7 @@ import pb.java.microservices.rest.Rate.entity.RatePlan;
 import pb.java.microservices.rest.Rate.entity.Stay;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -41,37 +45,27 @@ public class RateService {
                 results.add(ratePlan);
             }
         }
+        System.out.println(results.size());
         return results;
     }
 
     private void loadRateTableFromJsonFile(String filename) throws IOException {
-        String jsonData = readJsonFile(filename);
-        List<RatePlan> ratePlanList = parseJsonToRatePlanList(jsonData);
-        this.rateTable = ratePlanList.stream()
-                .collect(Collectors.toMap(
-                        rp -> new Stay(rp.getHotelId(), rp.getInDate(), rp.getOutDate()),
-                        Function.identity(),
-                        (existing, replacement) -> existing)); // in case of duplicates in file
-    }
-
-    private List<RatePlan> parseJsonToRatePlanList(String jsonData) {
-        List<RatePlan> ratePlanList = new ArrayList<>();
-        JsonArray jsonArray = new JsonParser().parse(jsonData).getAsJsonArray();
-
-        for (JsonElement jsonElement : jsonArray) {
-            RatePlan ratePlan = new RatePlan();
-            ratePlan.setHotelId(jsonElement.getAsJsonObject().get("hotelId").getAsString());
-            ratePlan.setInDate(jsonElement.getAsJsonObject().get("inDate").getAsString());
-            ratePlan.setOutDate(jsonElement.getAsJsonObject().get("outDate").getAsString());
-            ratePlanList.add(ratePlan);
-        }
-
-        return ratePlanList;
-    }
-
-    private String readJsonFile(String filename) throws IOException {
+        System.out.println("1");
         Resource resource = resourceLoader.getResource("classpath:" + filename);
-        InputStreamReader reader = new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8);
-        return FileCopyUtils.copyToString(reader);
+        System.out.println("2");
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        System.out.println("3");
+        try (InputStream is = resource.getInputStream()) {
+            List<RatePlan> ratePlans = mapper.readValue(is, new TypeReference<List<RatePlan>>() {});
+            for (RatePlan ratePlan : ratePlans) {
+                Stay stay = new Stay(ratePlan.getHotelId(), ratePlan.getInDate(), ratePlan.getOutDate());
+                this.rateTable.put(stay, ratePlan);
+            }
+            System.out.println("FINISHED LOADING DATA");
+        } catch (Exception e) {
+            System.out.println("ERROR LOADING DATA");
+            e.printStackTrace(); // Important for debugging
+        }
     }
 }
